@@ -118,7 +118,7 @@ class Baza{
       }
       cout<<"Unesite naziv studijskog programa:"<<endl;
       cin.clear();
-      cin>>naziv;
+      getline(cin,naziv);
       _studijskiProgrami.push_back(new stProgram(skr,naziv));
       return false;
     }
@@ -126,15 +126,16 @@ class Baza{
     bool kreirajPredmet(){
       string skr,naziv,stProg,usmjerenje;
       int sem,sp,sa,sl,ects,intgrupa;
-      cout<<"Unesite skracenicu od 2 slova:"<<endl;
+      cout<<"Unesite skracenicu i naziv predmeta:"<<endl;
+      cout<<"NAPOMENA: skracenica mora biti duzine 2!"<<endl;
       cin>>skr;
+      cin.clear();
+      getline(cin,naziv);
       if(skr.length()!=2){
         cout<<"Skracenica mora biti duzine 2!"<<endl;
         return false;
       }
       cin.clear();
-      cout<<"Unesite puni naziv predmeta:"<<endl;
-      cin>>naziv;
       cout<<"Unesite skracenicu st.programa i usmjerenja (oba moraju biti duzine 2)"<<endl;
       cin>>stProg>>usmjerenje;
       if(stProg.length()!=2 || usmjerenje.length()!=2){
@@ -142,8 +143,13 @@ class Baza{
         return false;
       }
       cin.clear();
-      cout<<"Unesite semestar, sate predavanja, sate AV, sate LV, ects i interesnu grupu(grupa oznacena brojem od 1 do 4)"<<endl;
+      cout<<"Unesite semestar, sate predavanja, sate AV, sate LV, ects i interesnu grupu"<<endl;
+      cout<<"NAPOMENA: semestar mora biti od 1 do 8, interesna grupa mora biti od 1 do 4!"<<endl;
       cin>>sem>>sp>>sa>>sl>>ects>>intgrupa;
+      if(sem<1||sem>9||intgrupa<1||intgrupa>4){
+        cout<<"Pogresan unos semestra ili interesne grupe!"<<endl;
+        return false;
+      }
       _predmeti.push_back(new Predmet(skr,naziv,stProg,usmjerenje,sem,sp,sa,sl,ects,intgrupa));
       return true;
     }
