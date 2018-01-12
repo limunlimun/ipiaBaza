@@ -3,7 +3,6 @@
 #include <string>
 #include <sstream>
 
-
 class Ispit{
   private:
     std::string _predmet;
