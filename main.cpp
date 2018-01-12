@@ -23,7 +23,12 @@ int main(){
     cin>>podopcija;
     if(opcija==1){
       b.print(podopcija);
+    }else if(opcija==2){
+      b.kreiraj(podopcija);
     }
+    cin.clear();
+    opcija=0;
+    podopcija=0;
   }
 
   return 0;

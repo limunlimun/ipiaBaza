@@ -10,6 +10,14 @@ class Baza{
     vector<Predmet*> _predmeti;
     vector<stProgram*> _studijskiProgrami;
     vector<Usmjerenje*> _usmjerenja;
+
+    bool _izmjenastudenti=false;
+    bool _izmjenanastavnici=false;
+    bool _izmjenaispiti=false;
+    bool _izmjenapredmeti=false;
+    bool _izmjenastprogrami=false;
+    bool _izmjenausmjerenja=false;
+
   public:
     Baza(){
       _studenti=kreirajStudente();
@@ -99,6 +107,106 @@ class Baza{
     }
 
     void spremiPodatke(){}
+
+    bool kreirajProgram(){
+      string skr,naziv;
+      cout<<"Unesite skracenicu od 2 slova:"<<endl;
+      cin>>skr;
+      if(skr.length()!=2){
+        cout<<"Skracenica mora biti duzine 2!"<<endl;
+        return false;
+      }
+      cout<<"Unesite naziv studijskog programa:"<<endl;
+      cin.clear();
+      cin>>naziv;
+      _studijskiProgrami.push_back(new stProgram(skr,naziv));
+      return false;
+    }
+
+    bool kreirajPredmet(){
+      string skr,naziv,stProg,usmjerenje;
+      int sem,sp,sa,sl,ects,intgrupa;
+      cout<<"Unesite skracenicu od 2 slova:"<<endl;
+      cin>>skr;
+      if(skr.length()!=2){
+        cout<<"Skracenica mora biti duzine 2!"<<endl;
+        return false;
+      }
+      cin.clear();
+      cout<<"Unesite puni naziv predmeta:"<<endl;
+      cin>>naziv;
+      cout<<"Unesite skracenicu st.programa i usmjerenja (oba moraju biti duzine 2)"<<endl;
+      cin>>stProg>>usmjerenje;
+      if(stProg.length()!=2 || usmjerenje.length()!=2){
+        cout<<"Moraju biti duzine 2!"<<endl;
+        return false;
+      }
+      cin.clear();
+      cout<<"Unesite semestar, sate predavanja, sate AV, sate LV, ects i interesnu grupu(grupa oznacena brojem od 1 do 4)"<<endl;
+      cin>>sem>>sp>>sa>>sl>>ects>>intgrupa;
+      _predmeti.push_back(new Predmet(skr,naziv,stProg,usmjerenje,sem,sp,sa,sl,ects,intgrupa));
+      return true;
+    }
+
+    bool kreirajNastavnika(){
+      string ime,prezime,jmbg,zvanje,predmet;
+      cout<<"Unesite ime,prezime,jmbg(13 cifara),zvanje i predmet"<<endl;
+      cin>>ime>>prezime>>jmbg>>zvanje>>predmet;
+      if(jmbg.length()!=13){
+        cout<<"Pogresan unos JMBG"<<endl;
+        return false;
+      }
+      _nastavnici.push_back(new Nastavnik(ime,prezime,jmbg,zvanje,predmet));
+      return true;
+    }
+
+    bool kreirajStudenta(){
+      string ime,prezime,jmbg,brind,stprog;
+      cout<<"Unesite ime, prezime, jmbg(13 cifara), br. indexa i studijski program(mora biti duzine 2)"<<endl;
+      cin>>ime>>prezime>>jmbg>>brind>>stprog;
+      if(jmbg.length()!=13 || stprog.length()!=2){
+        cout<<"JMBG ili st. prog. pogresno uneseni!"<<endl;
+        return false;
+      }
+      _studenti.push_back(new Student(ime,prezime,jmbg,brind,stprog));
+      return true;
+    }
+    
+    bool kreirajIspit(){
+      string pred,jmbg,brind,dat;
+      int ocj;
+      cout<<"Unesite predmet(skracenica od 2 slova),jmbg profesora(13 cifara),broj indexa studenta, datum i ocjenu"<<endl;
+      cin>>pred>>jmbg>>brind>>dat;
+      if(pred.length()!=2 || jmbg.length()!=13){
+        cout<<"Skracenica predmeta ili JMBG pogresno uneseni!"<<endl;
+        return false;
+      }
+      if(ocj<6 || ocj>10){
+        cout<<"Ocjena mora biti u rasponu od 6 do 10!"<<endl;
+        return false;
+      }
+      _ispiti.push_back(new Ispit(pred,jmbg,brind,dat,ocj));
+      return true;
+    }
+
+    void kreiraj(int o){
+      if(o==1){
+        if(kreirajProgram())
+          _izmjenastprogrami=true;
+      }else if(o==2){
+        if(kreirajPredmet())
+          _izmjenapredmeti=true;
+      }else if(o==3){
+        if(kreirajNastavnika())
+          _izmjenanastavnici=true;
+      }else if(o==4){
+        if(kreirajStudenta())
+          _izmjenastudenti=true;
+      }else if(o==5){
+        if(kreirajIspit())
+          _izmjenaispiti=true;
+      }
+    }
 
 };
 
