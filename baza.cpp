@@ -273,7 +273,8 @@ int Baza::pronadjiProgram(string kljuc){
   for(int i=0;i<_studijskiProgrami.size();++i)
     if((*_studijskiProgrami[i]).getSkr()==kljuc)
       return i;
-
+  
+  cout<<"Nije pronadjeno!"<<endl;
   return -1;
 }
 
@@ -282,6 +283,7 @@ int Baza::pronadjiPredmet(string kljuc){
     if((*_predmeti[i]).getSkr()==kljuc)
       return i;
 
+  cout<<"Nije pronadjeno!"<<endl;
   return -1;
 }
 
@@ -290,6 +292,7 @@ int Baza::pronadjiNastavnika(string kljuc){
     if((*_nastavnici[i]).getJMBG()==kljuc)
       return i;
 
+  cout<<"Nije pronadjeno!"<<endl;
   return -1;
 }
 
@@ -298,6 +301,7 @@ int Baza::pronadjiStudenta(string kljuc){
     if((*_studenti[i]).getBrInd()==kljuc)
       return i;
 
+  cout<<"Nije pronadjeno!"<<endl;
   return -1;
 }
 
@@ -306,6 +310,8 @@ int Baza::pronadjiIspit(string kljuc1,string kljuc2,string kljuc3){
     if((*_ispiti[i]).getPredmet()==kljuc1 && (*_ispiti[i]).getDatum()==kljuc2 && (*_ispiti[i]).getBrInd()==kljuc3)
       return i;
   }
+
+  cout<<"Nije pronadjeno!"<<endl;
   return -1;
 }
 
@@ -353,7 +359,7 @@ bool Baza::izmijeniPredmet(int i){
 
 bool Baza::izmijeniNastavnika(int i){
   Nastavnik n((*_nastavnici[i]));
-  cout<<"Trenutno ime i prezime: "<<n.getIme()<<" "<<n.getPrezime()<<endl;
+  cout<<"Trenutno ime i prezime: "<<(*_nastavnici[i]).getIme()<<" "<<(*_nastavnici[i]).getPrezime()<<endl;
   cout<<"Trenutno zvanje i predmet: "<<n.getZvanje()<<" "<<n.getPredmet()<<endl;
   string ime,prezime,zvanje,predmet;
   cout<<"Unesite novo ime prezime zvanje i predmet: ";
@@ -368,7 +374,7 @@ bool Baza::izmijeniNastavnika(int i){
 bool Baza::izmijeniStudenta(int i){
   Student s((*_studenti[i]));
   cout<<"Trenutni podaci: ime prezime jmbg st.prog"<<endl;
-  cout<<s.getIme()<<" "<<s.getPrezime()<<" "<<s.getJMBG()<<" "<<s.getStProg()<<endl;
+  cout<<(*_studenti[i]).getIme()<<" "<<(*_studenti[i]).getPrezime()<<" "<<(*_studenti[i]).getJMBG()<<" "<<s.getStProg()<<endl;
   string ime,prezime,jmbg,stp;
   cout<<"Unesite nove podatke: ime prezime jmbg st.prog"<<endl;
   cout<<"NAPOMENA: jmbg mora sadrzavati 13 cifara, a st.prog 2 slova"<<endl;
@@ -462,7 +468,21 @@ void Baza::print(int o){
       cout<<(*_ispiti[i]).printIspit()<<endl;
     }
   }else if(o==6){
-    cout<<"semestar"<<endl;
+    int sem;
+    int br=0;
+    cout<<"Unesite semestar (od 1 do 8): ";
+    cin>>sem;
+    if(sem<1||sem>8){
+      cout<<"Pogresan unos!"<<endl;
+      return;
+    }
+    for(int i=0;i<_predmeti.size();++i){
+      if((*_predmeti[i]).getSemestar()==sem){
+        cout<<(*_predmeti[i]).printPredmet()<<endl;
+        ++br;
+      }
+    }
+    if(br==0) cout<<"Nije pronadjen nijedan predmet u trazenom semestru!"<<endl;
   }
 }
 
