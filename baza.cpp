@@ -192,6 +192,175 @@ void Baza::printPodOpcije(int o){
   cout<<endl;
 }
 
+int Baza::pronadjiProgram(string kljuc){
+  for(int i=0;i<_studijskiProgrami.size();++i)
+    if((*_studijskiProgrami[i]).getSkr()==kljuc)
+      return i;
+
+  return -1;
+}
+
+int Baza::pronadjiPredmet(string kljuc){
+  for(int i=0;i<_predmeti.size();++i)
+    if((*_predmeti[i]).getSkr()==kljuc)
+      return i;
+
+  return -1;
+}
+
+int Baza::pronadjiNastavnika(string kljuc){
+  for(int i=0;i<_nastavnici.size();++i)
+    if((*_nastavnici[i]).getJMBG()==kljuc)
+      return i;
+
+  return -1;
+}
+
+int Baza::pronadjiStudenta(string kljuc){
+  for(int i=0;i<_studenti.size();++i)
+    if((*_studenti[i]).getBrInd()==kljuc)
+      return i;
+
+  return -1;
+}
+
+int Baza::pronadjiIspit(string kljuc1,string kljuc2,string kljuc3){
+  for(int i=0;i<_ispiti.size();++i){
+    if((*_ispiti[i]).getPredmet()==kljuc1 && (*_ispiti[i]).getDatum()==kljuc2 && (*_ispiti[i]).getBrInd()==kljuc3)
+      return i;
+  }
+  return -1;
+}
+
+bool Baza::izmijeniProgram(int i){
+  cout<<"Trenutni naziv st. programa: "<<(*_studijskiProgrami[i]).getNaziv()<<endl;
+  string naziv;
+  cout<<"Unesite novi naziv: "<<endl;
+  getline(cin,naziv);
+  (*_studijskiProgrami[i]).setNaziv(naziv);
+  return true;
+}
+
+bool Baza::izmijeniPredmet(int i){
+  Predmet p((*_predmeti[i]));
+  cout<<"Trenutna polja predmeta: "<<endl;
+  cout<<"Naziv: "<<p.getNaziv()<<endl;
+  cout<<"Studijski program: "<<p.getStProg()<<endl;
+  cout<<"Usmjerenje: "<<p.getUsmjerenje()<<endl;
+  cout<<"Semestar: "<<p.getSemestar()<<endl;
+  cout<<"Sati predavanja, AV, LV"<<p.getSatiPred()<<" "<<p.getSatiAV()<<" "<<p.getSatiLV()<<endl;
+  cout<<"ECTS i interesna grupa: "<<p.getEcts()<<" "<<p.getIntGrupa()<<endl;
+  cout<<"Unesite novi naziv predmeta: ";
+  string naziv;
+  cin>>naziv;
+  cout<<"Unesite semestar, sate predavanja, AV, LV, ECTS i interesnu grupu(od 1 do 4):"<<endl;
+  cout<<"NAPOMENA: vrijednosti su cijeli brojevi!"<<endl;
+  int sem,sp,sa,sl,ects,ig;
+  cin.clear();
+  cin>>sem>>sp>>sa>>sl>>ects>>ig;
+  if(sem<1||sem>8||ig<1||ig>4) {
+    cout<<"Pogresan unos!"<<endl;
+    return false;
+  }
+  (*_predmeti[i]).setNaziv(naziv);
+  (*_predmeti[i]).setSemestar(sem);
+  (*_predmeti[i]).setSatiPred(sp);
+  (*_predmeti[i]).setSatiAV(sa);
+  (*_predmeti[i]).setSatiLV(sl);
+  (*_predmeti[i]).setEcts(ects);
+  (*_predmeti[i]).setIntGrupa(ig);
+  return true;
+}
+
+bool Baza::izmijeniNastavnika(int i){
+  Nastavnik n((*_nastavnici[i]));
+  cout<<"Trenutno ime i prezime: "<<n.getIme()<<" "<<n.getPrezime()<<endl;
+  cout<<"Trenutno zvanje i predmet: "<<n.getZvanje()<<" "<<n.getPredmet()<<endl;
+  string ime,prezime,zvanje,predmet;
+  cout<<"Unesite novo ime prezime zvanje i predmet: ";
+  cin>>ime>>prezime>>zvanje>>predmet;
+  (*_nastavnici[i]).setIme(ime);
+  (*_nastavnici[i]).setPrezime(prezime);
+  (*_nastavnici[i]).setZvanje(zvanje);
+  (*_nastavnici[i]).setPredmet(predmet);
+  return true;
+}
+
+bool Baza::izmijeniStudenta(int i){
+  Student s((*_studenti[i]));
+  cout<<"Trenutni podaci: ime prezime jmbg st.prog"<<endl;
+  cout<<s.getIme()<<" "<<s.getPrezime()<<" "<<s.getJMBG()<<" "<<s.getStProg()<<endl;
+  string ime,prezime,jmbg,stp;
+  cout<<"Unesite nove podatke: ime prezime jmbg st.prog"<<endl;
+  cout<<"NAPOMENA: jmbg mora sadrzavati 13 cifara, a st.prog 2 slova"<<endl;
+  cin>>ime>>prezime>>jmbg>>stp;
+  if(jmbg.length()!=13 || stp.length()!=2){
+    cout<<"Pogresan unos jmbg ili st.prog"<<endl;
+    return false;
+  }
+  (*_studenti[i]).setIme(ime);
+  (*_studenti[i]).setPrezime(prezime);
+  (*_studenti[i]).setJMBG(jmbg);
+  (*_studenti[i]).setStProg(stp);
+  return true;
+}
+
+bool Baza::izmijeniIspit(int i){
+  Ispit is((*_ispiti[i]));
+  cout<<"Trenutni ocjena: "<<is.getOcjena()<<endl;
+  int ocjena;
+  cout<<"Unesite novu ocjenu: ";
+  cin>>ocjena;
+  if(ocjena<6||ocjena>10){
+    cout<<"Ocjena mora biti u rasponu od 6 do 10!"<<endl;
+    return false;
+  }
+  (*_ispiti[i]).setOcjena(ocjena);
+  return true;
+}
+
+void Baza::izmijeni(int o){
+  string kljuc;
+  int i;
+  if(o==1){
+    cout<<"Unesite kljuc (skracenicu st.prog od 2 slova):"<<endl;
+    cin>>kljuc;
+    i=pronadjiProgram(kljuc);
+    if(i!=-1)
+      if(izmijeniProgram(i))
+        _izmjenastprogrami=true;
+  }else if(o==2){
+    cout<<"Unesite kljuc (skracenicu predmeta od 2 slova):"<<endl;
+    cin>>kljuc;
+    i=pronadjiPredmet(kljuc);
+    if(i!=-1)
+      if(izmijeniPredmet(i))
+        _izmjenapredmeti=true;
+  }else if(o==3){
+    cout<<"Unesite kljuc (jmbg 13 cifara):"<<endl;
+    cin>>kljuc;
+    i=pronadjiNastavnika(kljuc);
+    if(i!=-1)
+      if(izmijeniNastavnika(i))
+        _izmjenanastavnici=true;
+  }else if(o==4){
+    cout<<"Unesite kljuc (br. indexa):"<<endl;
+    cin>>kljuc;
+    i=pronadjiStudenta(kljuc);
+    if(i!=-1)
+      if(izmijeniStudenta(i))
+        _izmjenastudenti=true;
+  }else if(o==5){
+    cout<<"Unesite kljuc(skracenicu predmeta, datum i br.indexa):"<<endl;
+    string kljuc2,kljuc3;
+    cin>>kljuc>>kljuc2>>kljuc3;
+    i=pronadjiIspit(kljuc,kljuc2,kljuc3);
+    if(i!=-1)
+      if(izmijeniIspit(i))
+        _izmjenaispiti=true;
+  }
+}
+
 void Baza::print(int o){
   if(o==1){
     for(int i=0;i<_studijskiProgrami.size();++i){
@@ -294,7 +463,7 @@ bool Baza::kreirajIspit(){
   string pred,jmbg,brind,dat;
   int ocj;
   cout<<"Unesite predmet(skracenica od 2 slova),jmbg profesora(13 cifara),broj indexa studenta, datum i ocjenu"<<endl;
-  cin>>pred>>jmbg>>brind>>dat;
+  cin>>pred>>jmbg>>brind>>dat>>ocj;
   if(pred.length()!=2 || jmbg.length()!=13){
     cout<<"Skracenica predmeta ili JMBG pogresno uneseni!"<<endl;
     return false;

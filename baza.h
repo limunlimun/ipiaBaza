@@ -43,6 +43,19 @@ class Baza{
     bool kreirajIspit();
     void kreiraj(int o);
 
+    bool izmijeniProgram(int i);
+    bool izmijeniPredmet(int i);
+    bool izmijeniNastavnika(int i);
+    bool izmijeniStudenta(int i);
+    bool izmijeniIspit(int i);
+    void izmijeni(int o);
+
+    int pronadjiProgram(string kljuc);
+    int pronadjiPredmet(string kljuc);
+    int pronadjiNastavnika(string kljuc);
+    int pronadjiStudenta(string kljuc);
+    int pronadjiIspit(string kljuc1,string kljuc2,string kljuc3);
+
     vector<Student*> ucitajStudente();
     vector<Nastavnik*> ucitajNastavnike();
     vector<Ispit*> ucitajIspite();
