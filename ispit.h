@@ -81,7 +81,7 @@ class Ispit{
       else return false;
     }
 
-    std::string printIspit(){
+    std::string print(){
       std::ostringstream ocj;
       ocj<<_ocjena;
       return _predmet+"#"+_jmbgProf+"#"+_brInd+"#"+_datum+"#"+ocj.str()+"#";

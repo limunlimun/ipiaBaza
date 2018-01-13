@@ -48,7 +48,7 @@ class stProgram{
       else return false;
     }
 
-    std::string printStProgram(){
+    std::string print(){
       return _skr+"#"+_naziv+"#";
     }
 };

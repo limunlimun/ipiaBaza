@@ -137,7 +137,7 @@ class Predmet{
       else return false;
     }
 
-    std::string printPredmet(){
+    std::string print(){
       std::ostringstream semestar;
       std::ostringstream sp;
       std::ostringstream sa;

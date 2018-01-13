@@ -1,5 +1,16 @@
 #include "baza.h"
 
+template <typename T>
+void spremi(string naziv,vector<T*> vec){
+  ofstream ofile(naziv);
+  if(ofile.is_open()){
+    for(int i=0;i<vec.size();++i){
+      ofile<<(*vec[i]).print();
+    }
+    ofile.close();
+  }else cout<<"Greska pri ispisu "+naziv<<endl;
+}
+
 int stringUBroj(const string &tekst){
       stringstream ss(tekst);
       int rezultat;
@@ -449,23 +460,23 @@ void Baza::izmijeni(int o){
 void Baza::print(int o){
   if(o==1){
     for(int i=0;i<_studijskiProgrami.size();++i){
-      cout<<(*_studijskiProgrami[i]).printStProgram()<<endl;
+      cout<<(*_studijskiProgrami[i]).print()<<endl;
     }
   }else if(o==2){
     for(int i=0;i<_predmeti.size();++i){
-      cout<<(*_predmeti[i]).printPredmet()<<endl;
+      cout<<(*_predmeti[i]).print()<<endl;
     }
   }else if(o==3){
     for(int i=0;i<_nastavnici.size();++i){
-      cout<<(*_nastavnici[i]).printNastavnik()<<endl;
+      cout<<(*_nastavnici[i]).print()<<endl;
     }
   }else if(o==4){
     for(int i=0;i<_studenti.size();++i){
-      cout<<(*_studenti[i]).printStudent()<<endl;
+      cout<<(*_studenti[i]).print()<<endl;
     }
   }else if(o==5){
     for(int i=0;i<_ispiti.size();++i){
-      cout<<(*_ispiti[i]).printIspit()<<endl;
+      cout<<(*_ispiti[i]).print()<<endl;
     }
   }else if(o==6){
     int sem;
@@ -478,7 +489,7 @@ void Baza::print(int o){
     }
     for(int i=0;i<_predmeti.size();++i){
       if((*_predmeti[i]).getSemestar()==sem){
-        cout<<(*_predmeti[i]).printPredmet()<<endl;
+        cout<<(*_predmeti[i]).print()<<endl;
         ++br;
       }
     }
@@ -486,7 +497,14 @@ void Baza::print(int o){
   }
 }
 
-void Baza::spremiPodatke(){}
+void Baza::spremiPodatke(){
+    spremi("ispit.dat",_ispiti);
+    spremi("predmet.dat",_predmeti);
+    spremi("student.dat",_studenti);
+    spremi("nastavnik.dat",_nastavnici);  
+    spremi("studijskiProgram.dat",_studijskiProgrami);
+    spremi("usmjerenje.dat",_usmjerenja);
+}
 
 bool Baza::kreirajProgram(){
   string skr,naziv;

@@ -57,7 +57,7 @@ class Nastavnik : public Osoba{
       else return false;
     }
 
-    std::string printNastavnik()const{
+    std::string print()const{
       return getJMBG()+"#"+getIme()+"#"+getPrezime()+"#"+_zvanje+"#"+_predmet+"#";
     }
 };

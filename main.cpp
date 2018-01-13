@@ -14,8 +14,8 @@ int main(){
     b.printOpcije();
     cin>>opcija;
     if(opcija==5){
-      b.spremiPodatke();
-      break;
+      izlaz=1;
+      continue;
     }
     b.printPodOpcije(opcija);
     cin.clear();
@@ -33,6 +33,6 @@ int main(){
     opcija=0;
     podopcija=0;
   }
-
+  b.spremiPodatke();
   return 0;
 }

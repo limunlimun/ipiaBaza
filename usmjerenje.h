@@ -59,7 +59,7 @@ class Usmjerenje{
       else return false;
     }
 
-    std::string printUsmjerenje(){
+    std::string print(){
       return _skr+"#"+_naziv+"#"+_stProgram+"#";
     }
 };

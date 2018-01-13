@@ -58,7 +58,7 @@ class Student: public Osoba{
       else return false;
     }
     
-    std::string printStudent(){
+    std::string print(){
       return getJMBG()+"#"+getIme()+"#"+getPrezime()+"#"+_brInd+"#"+_stProg+"#";
     }
 
