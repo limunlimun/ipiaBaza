@@ -55,6 +55,12 @@ class Baza{
     int pronadjiNastavnika(string kljuc);
     int pronadjiStudenta(string kljuc);
     int pronadjiIspit(string kljuc1,string kljuc2,string kljuc3);
+    
+    bool obrisiPredmet(int i);
+    bool obrisiNastavnika(int i);
+    bool obrisiStudenta(int i);
+    bool obrisiIspit(int i);
+    void obrisi(int o);
 
     vector<Student*> ucitajStudente();
     vector<Nastavnik*> ucitajNastavnike();

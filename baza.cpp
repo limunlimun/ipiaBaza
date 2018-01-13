@@ -192,6 +192,83 @@ void Baza::printPodOpcije(int o){
   cout<<endl;
 }
 
+bool Baza::obrisiPredmet(int i){
+  int size=_predmeti.size();
+  _predmeti.erase(_predmeti.begin()+i);
+  if(size>_predmeti.size())return true;
+  else{
+    cout<<"Greska!"<<endl;
+    return false;
+  }
+}
+
+bool Baza::obrisiNastavnika(int i){
+  int size=_nastavnici.size();
+  _nastavnici.erase(_nastavnici.begin()+i);
+  if(size>_nastavnici.size()) return true;
+  else{
+    cout<<"Greska!"<<endl;
+    return false;
+  }
+}
+
+bool Baza::obrisiStudenta(int i){
+  int size=_studenti.size();
+  _studenti.erase(_studenti.begin()+i);
+  if(size>_studenti.size()) return true;
+  else{
+    cout<<"Greska!"<<endl;
+    return false;
+  }
+}
+
+bool Baza::obrisiIspit(int i){
+  int size=_ispiti.size();
+  _ispiti.erase(_ispiti.begin()+i);
+  if(size>_ispiti.size()) return true;
+  else{
+    cout<<"Greska!"<<endl;
+    return false;
+  }
+}
+
+void Baza::obrisi(int o){
+  string kljuc;
+  int i;
+  if(o==1){
+    cout<<"Unesite kljuc (skracenica od 2 slova):";
+    cin>>kljuc;
+    i=pronadjiPredmet(kljuc);
+    if(i!=-1)
+      if(obrisiPredmet(i))
+        _izmjenapredmeti=true;
+  }else if(o==2){
+    cout<<"Unesite kljuc (JMBG od 13 cifara):";
+    cin>>kljuc;
+    i=pronadjiNastavnika(kljuc);
+    if(i!=-1)
+      if(obrisiNastavnika(i))
+        _izmjenanastavnici=true;
+  }else if(o==3){
+    cout<<"Unesite kljuc (br. indexa): ";
+    cin>>kljuc;
+    i=pronadjiStudenta(kljuc);
+    if(i!=-1)
+      if(obrisiStudenta(i))
+        _izmjenastudenti=true;
+  }else if(o==4){
+    string kljuc2,kljuc3;
+    cout<<"Unesite kljuc (skracenicu predmeta datum i broj indexa):"<<endl<<"NAPOMENA: skracenica mora biti duzine 2!"<<endl;
+    cin>>kljuc>>kljuc2>>kljuc3;
+    i=pronadjiIspit(kljuc,kljuc2,kljuc3);
+    if(i!=-1)
+      if(obrisiIspit(i))
+        _izmjenaispiti=true;
+  }else if(o!=5){
+    cout<<"Unos nije validan!"<<endl;
+  }
+}
+
 int Baza::pronadjiProgram(string kljuc){
   for(int i=0;i<_studijskiProgrami.size();++i)
     if((*_studijskiProgrami[i]).getSkr()==kljuc)
@@ -233,6 +310,7 @@ int Baza::pronadjiIspit(string kljuc1,string kljuc2,string kljuc3){
 }
 
 bool Baza::izmijeniProgram(int i){
+  cin.ignore();
   cout<<"Trenutni naziv st. programa: "<<(*_studijskiProgrami[i]).getNaziv()<<endl;
   string naziv;
   cout<<"Unesite novi naziv: "<<endl;
@@ -251,8 +329,9 @@ bool Baza::izmijeniPredmet(int i){
   cout<<"Sati predavanja, AV, LV"<<p.getSatiPred()<<" "<<p.getSatiAV()<<" "<<p.getSatiLV()<<endl;
   cout<<"ECTS i interesna grupa: "<<p.getEcts()<<" "<<p.getIntGrupa()<<endl;
   cout<<"Unesite novi naziv predmeta: ";
+  cin.ignore();
   string naziv;
-  cin>>naziv;
+  getline(cin,naziv);
   cout<<"Unesite semestar, sate predavanja, AV, LV, ECTS i interesnu grupu(od 1 do 4):"<<endl;
   cout<<"NAPOMENA: vrijednosti su cijeli brojevi!"<<endl;
   int sem,sp,sa,sl,ects,ig;
@@ -391,15 +470,14 @@ void Baza::spremiPodatke(){}
 
 bool Baza::kreirajProgram(){
   string skr,naziv;
-  cout<<"Unesite skracenicu od 2 slova:"<<endl;
+  cout<<"Unesite skracenicu od 2 slova i puni naziv st. programa: "<<endl;
   cin>>skr;
+  cin.clear();
+  getline(cin,naziv);
   if(skr.length()!=2){
     cout<<"Skracenica mora biti duzine 2!"<<endl;
     return false;
   }
-  cout<<"Unesite naziv studijskog programa:"<<endl;
-  cin.clear();
-  getline(cin,naziv);
   _studijskiProgrami.push_back(new stProgram(skr,naziv));
   return false;
 }

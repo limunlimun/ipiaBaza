@@ -26,6 +26,8 @@ int main(){
       b.kreiraj(podopcija);
     }else if(opcija==3){
       b.izmijeni(podopcija);
+    }else if(opcija==4){
+      b.obrisi(podopcija);
     }
     cin.clear();
     opcija=0;
